@@ -1,0 +1,525 @@
+{
+  "info": {
+    "name": "Project_WEB – McDonald's API",
+    "description": "Full collection for the Project_WEB Django DRF backend.\n\n**Base URL:** `http://localhost:8000`\n\n**Auth:** Token Authentication. After Login, copy the token value into the collection variable `token`.\n\n**Variables:**\n- `base_url` → `http://localhost:8000`\n- `token` → paste token from Login response",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8000" },
+    { "key": "token",    "value": "" }
+  ],
+  "item": [
+
+    {
+      "name": "Auth",
+      "description": "Register, login, logout endpoints — `/api/auth/`",
+      "item": [
+
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/auth/register/", "host": ["{{base_url}}"], "path": ["api","auth","register",""] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"testuser\",\n  \"email\": \"testuser@mail.com\",\n  \"password\": \"pass1234\",\n  \"passwordRavno\": \"pass1234\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "status": "Created",
+              "code": 201,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"message\": \"Вы теперь наш раб!\"\n}"
+            },
+            {
+              "name": "400 Passwords don't match",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"non_field_errors\": [\"Уже забыл? Боже ты же ток что написал пароль!\"]\n}"
+            },
+            {
+              "name": "400 Username taken",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"username\": [\"A user with that username already exists.\"]\n}"
+            }
+          ]
+        },
+
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.token) {",
+                  "    pm.collectionVariables.set('token', json.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/auth/login/", "host": ["{{base_url}}"], "path": ["api","auth","login",""] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"pass1234\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"token\": \"9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b\",\n  \"Наш раб\": \"testuser\"\n}"
+            },
+            {
+              "name": "400 Wrong credentials",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"non_field_errors\": [\"Unable to log in with provided credentials.\"]\n}"
+            }
+          ]
+        },
+
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Token {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/auth/logout/", "host": ["{{base_url}}"], "path": ["api","auth","logout",""] },
+            "body": { "mode": "raw", "raw": "" }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"message\": \"Вы стали свободным человеком\"\n}"
+            }
+          ]
+        }
+
+      ]
+    },
+
+    {
+      "name": "Categories",
+      "description": "CRUD for menu categories via DefaultRouter — `/api/categories/`",
+      "item": [
+
+        {
+          "name": "List Categories",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/categories/", "host": ["{{base_url}}"], "path": ["api","categories",""] }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "[\n  { \"id\": 1, \"category_name\": \"Burgers\" },\n  { \"id\": 2, \"category_name\": \"Drinks\" },\n  { \"id\": 3, \"category_name\": \"Desserts\" }\n]"
+            }
+          ]
+        },
+
+        {
+          "name": "Get Category",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/categories/1/", "host": ["{{base_url}}"], "path": ["api","categories","1",""] }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": 1,\n  \"category_name\": \"Burgers\"\n}"
+            },
+            {
+              "name": "404 Not Found",
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"detail\": \"Not found.\"\n}"
+            }
+          ]
+        },
+
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Token {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/categories/", "host": ["{{base_url}}"], "path": ["api","categories",""] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category_name\": \"Salads\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "status": "Created",
+              "code": 201,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": 4,\n  \"category_name\": \"Salads\"\n}"
+            }
+          ]
+        },
+
+        {
+          "name": "Update Category",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Token {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/categories/4/", "host": ["{{base_url}}"], "path": ["api","categories","4",""] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category_name\": \"Salads & Wraps\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": 4,\n  \"category_name\": \"Salads & Wraps\"\n}"
+            }
+          ]
+        },
+
+        {
+          "name": "Partial Update Category",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Token {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/categories/4/", "host": ["{{base_url}}"], "path": ["api","categories","4",""] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category_name\": \"Wraps\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": 4,\n  \"category_name\": \"Wraps\"\n}"
+            }
+          ]
+        },
+
+        {
+          "name": "Delete Category",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Token {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/categories/4/", "host": ["{{base_url}}"], "path": ["api","categories","4",""] }
+          },
+          "response": [
+            {
+              "name": "204 No Content",
+              "status": "No Content",
+              "code": 204,
+              "header": [],
+              "body": ""
+            }
+          ]
+        }
+
+      ]
+    },
+
+    {
+      "name": "Products",
+      "description": "CRUD for products via DefaultRouter — `/api/products/`\nPlus extra endpoints: product-list and search.",
+      "item": [
+
+        {
+          "name": "List Products",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/products/", "host": ["{{base_url}}"], "path": ["api","products",""] }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "[\n  {\n    \"id\": 1,\n    \"product_name\": \"Big Mac\",\n    \"price\": 1500,\n    \"Category\": 1,\n    \"isActiv\": true\n  },\n  {\n    \"id\": 2,\n    \"product_name\": \"McFlurry\",\n    \"price\": 900,\n    \"Category\": 3,\n    \"isActiv\": true\n  },\n  {\n    \"id\": 3,\n    \"product_name\": \"Coca-Cola\",\n    \"price\": 600,\n    \"Category\": 2,\n    \"isActiv\": true\n  }\n]"
+            }
+          ]
+        },
+
+        {
+          "name": "Get Product",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/products/1/", "host": ["{{base_url}}"], "path": ["api","products","1",""] }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": 1,\n  \"product_name\": \"Big Mac\",\n  \"price\": 1500,\n  \"Category\": 1,\n  \"isActiv\": true\n}"
+            },
+            {
+              "name": "404 Not Found",
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"detail\": \"Not found.\"\n}"
+            }
+          ]
+        },
+
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Token {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/products/", "host": ["{{base_url}}"], "path": ["api","products",""] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product_name\": \"McChicken\",\n  \"price\": 1200,\n  \"Category\": 1,\n  \"isActiv\": true\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "status": "Created",
+              "code": 201,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": 4,\n  \"product_name\": \"McChicken\",\n  \"price\": 1200,\n  \"Category\": 1,\n  \"isActiv\": true\n}"
+            }
+          ]
+        },
+
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Token {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/products/4/", "host": ["{{base_url}}"], "path": ["api","products","4",""] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product_name\": \"McChicken Deluxe\",\n  \"price\": 1400,\n  \"Category\": 1,\n  \"isActiv\": true\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": 4,\n  \"product_name\": \"McChicken Deluxe\",\n  \"price\": 1400,\n  \"Category\": 1,\n  \"isActiv\": true\n}"
+            }
+          ]
+        },
+
+        {
+          "name": "Partial Update Product",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Token {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/products/4/", "host": ["{{base_url}}"], "path": ["api","products","4",""] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isActiv\": false\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": 4,\n  \"product_name\": \"McChicken Deluxe\",\n  \"price\": 1400,\n  \"Category\": 1,\n  \"isActiv\": false\n}"
+            }
+          ]
+        },
+
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Token {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/products/4/", "host": ["{{base_url}}"], "path": ["api","products","4",""] }
+          },
+          "response": [
+            {
+              "name": "204 No Content",
+              "status": "No Content",
+              "code": 204,
+              "header": [],
+              "body": ""
+            }
+          ]
+        },
+
+        {
+          "name": "Products List (flat)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/products-list/", "host": ["{{base_url}}"], "path": ["api","products-list",""] }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "[\n  {\n    \"id\": 1,\n    \"product_name\": \"Big Mac\",\n    \"price\": 1500,\n    \"Category\": 1,\n    \"isActiv\": true\n  },\n  {\n    \"id\": 2,\n    \"product_name\": \"McFlurry\",\n    \"price\": 900,\n    \"Category\": 3,\n    \"isActiv\": true\n  }\n]"
+            }
+          ]
+        },
+
+        {
+          "name": "Search Products",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/products/search/?name=mac",
+              "host": ["{{base_url}}"],
+              "path": ["api","products","search",""],
+              "query": [{ "key": "name", "value": "mac" }]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK – results found",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "[\n  {\n    \"id\": 1,\n    \"product_name\": \"Big Mac\",\n    \"price\": 1500,\n    \"Category\": 1,\n    \"isActiv\": true\n  }\n]"
+            },
+            {
+              "name": "400 No query param",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"message\": \"Введиите имееющий хавчик\"\n}"
+            }
+          ]
+        }
+
+      ]
+    },
+
+    {
+      "name": "Orders",
+      "description": "Checkout and order history — requires Token auth.\nNote: orders/urls.py is not yet wired in config/urls.py. Add `path('api/', include('orders.urls'))` once the file is created.",
+      "item": [
+
+        {
+          "name": "Checkout (Place Order)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Token {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/checkout/", "host": ["{{base_url}}"], "path": ["api","checkout",""] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    { \"product_id\": 1, \"quantity\": 2 },\n    { \"product_id\": 3, \"quantity\": 1 }\n  ],\n  \"delivery_address\": \"Almaty, Dostyk 5\",\n  \"promik\": \"STUDENT10\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "status": "Created",
+              "code": 201,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"message\": \"Заказ принят\",\n  \"номер заказа\": 7\n}"
+            },
+            {
+              "name": "400 Invalid data",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"message\": \"Заказ не оформлен\",\n  \"items\": [\"This field is required.\"]\n}"
+            },
+            {
+              "name": "401 Unauthorized",
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"detail\": \"Authentication credentials were not provided.\"\n}"
+            }
+          ]
+        },
+
+        {
+          "name": "Order History",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Token {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/orders/history/", "host": ["{{base_url}}"], "path": ["api","orders","history",""] }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "[\n  {\n    \"id\": 5,\n    \"Создано в\": \"2025-04-18T10:23:00Z\",\n    \"Выполнен\": true\n  },\n  {\n    \"id\": 6,\n    \"Создано в\": \"2025-04-20T14:05:00Z\",\n    \"Выполнен\": false\n  }\n]"
+            },
+            {
+              "name": "401 Unauthorized",
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"detail\": \"Authentication credentials were not provided.\"\n}"
+            }
+          ]
+        }
+
+      ]
+    }
+
+  ]
+}
