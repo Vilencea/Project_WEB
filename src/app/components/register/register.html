@@ -1,0 +1,40 @@
+<div class="login-wrapper">
+  <h2>Регистрация</h2>
+
+  <div *ngIf="error" class="error-msg">{{ error }}</div>
+<!--тут нгшек много-->
+  <input
+    type="text"
+    placeholder="Логин"
+    [(ngModel)]="username"
+  />
+
+  <input
+    type="email"
+    placeholder="Email"
+    [(ngModel)]="email"
+  />
+
+  <input
+    type="password"
+    placeholder="Пароль"
+    [(ngModel)]="password"
+  />
+
+  <input
+    type="password"
+    placeholder="Повторите пароль"
+    [(ngModel)]="password2"
+  />
+
+  <button
+    (click)="onSubmit()"
+    [disabled]="loading"
+  >
+    {{ loading ? 'Регистрируем...' : 'Зарегистрироваться' }}
+  </button>
+
+  <p class="switch-link">
+    Уже есть аккаунт? <a routerLink="/login">Войти</a>
+  </p>
+</div>

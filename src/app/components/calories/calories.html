@@ -1,0 +1,36 @@
+<div class="calories-wrapper">
+  <h2>Калькулятор калорий</h2>
+
+  <div>
+    <label>Ваш пол:</label>
+    <select [(ngModel)]="gender">
+      <option value="male">Мужской</option>
+      <option value="female">Женский</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Вес (кг):</label>
+    <input type="number" [(ngModel)]="weight">
+  </div>
+
+  <div>
+    <label>Рост (см):</label>
+    <input type="number" [(ngModel)]="height">
+  </div>
+
+  <div>
+    <label>Возраст:</label>
+    <input type="number" [(ngModel)]="age">
+  </div>
+
+  <button (click)="calculateDaily()">Рассчитать норму</button>
+
+  @if (result > 0) {
+    <div class="result-box">
+      <p>Ваша норма: <strong>{{ result }} Ккал</strong></p>
+      <p>Можете выбрать бургеры в пределах этой нормы</p>
+      <button (click)="resetData()">Сбросить расчёты</button>
+    </div>
+  }
+</div>

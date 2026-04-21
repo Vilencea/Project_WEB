@@ -1,0 +1,160 @@
+.menu-container {
+    max-width: 1228px;
+    margin: 0 auto;
+    padding: 30px 20px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Хедер */
+.menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f8f8;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+}
+
+/* Разметка */
+.main-layout {
+    display: flex;
+    gap: 40px;
+}
+
+.sidebar ul {
+    list-style-type: none; /*чтобы черных точек не было, нужна энзимная пудра*/
+    padding: 0;            /*убираем отступ слева, потому что пацаны не отступают*/
+    margin: 0;
+}
+
+.sidebar li {
+    padding: 12px 20px;
+    cursor: pointer;
+    border-radius: 25px;
+    margin-bottom: 8px;
+    transition: 0.3s;
+    font-weight: 600;
+    display: block;        /*че слишком широкий чтоли?*/
+}
+
+.sidebar li:hover {
+    background-color: #f0f0f0; /*выделение при наведении*/
+}
+
+.sidebar li.active {
+    background-color: #FFBC0D; /*чтобы желтой была выбраная категория*/
+}
+
+/*чтобы карточка товара вах красивая была*/
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+.product-item {
+    width: 260px;
+    background: #fff;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    transition: 0.3s;
+}
+
+.product-item:hover {
+    transform: translateY(-5px);
+}
+
+/*Стили для картинки*/
+.product-image {
+    width: 100%;
+    height: 160px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.product-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.no-image {
+    font-size: 50px;
+    background: #f0f0f0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+}
+
+.product-info h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.price {
+    font-size: 20px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.btn-main {
+    background: #FFBC0D;
+    border: none;
+    padding: 12px;
+    border-radius: 12px;
+    font-weight: 700;
+    width: 100%;
+    cursor: pointer;
+}
+
+.btn-delete {
+    background: none;
+    border: none;
+    color: #999;
+    margin-top: 10px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.cart-section {
+    margin-top: 50px;
+    padding: 30px;
+    border: 2px solid #FFBC0D;
+    border-radius: 25px;
+    background: #fff;
+}
+
+.cart-items {
+    list-style: none;
+    padding: 0;
+}
+
+.cart-items li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px dashed #ccc;
+}
+
+.checkout-btn {
+    background: #FFBC0D;
+    border: none;
+    padding: 15px;
+    width: 100%;
+    border-radius: 12px;
+    font-weight: 700;
+    margin-top: 15px;
+    cursor: pointer;
+}
+

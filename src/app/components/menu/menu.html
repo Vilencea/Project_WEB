@@ -1,0 +1,89 @@
+<div class="menu-container"><!--контейнер который держит всё в себе, но ты в себе не держи Алмас-->
+  <header class="menu-header"><!--заголовок где живут поиск и фильтры, элита как бшашницы-->
+    <div class="search-box"> <!--поле чудес короче-->
+      <input type="text" [(ngModel)]="searchText" placeholder="Поиск бургера...">
+    </div>
+    
+    <div class="filter-controls"><!--фейс контроль перед клубом-->
+      <div class="price-slider"><!--ползунок для цены-->
+        <span>До <strong>{{ maxPrice }} KZT</strong></span>
+        <input type="range" [(ngModel)]="maxPrice" min="0" max="5000"><!--базовый минимум и раскошный максимум-->
+      </div>
+      <button class="btn-secondary" (click)="sortByPrice()">Сначала дешевые</button> <!--акшасы жоктар осыны басад-->
+      <button class="btn-outline" (click)="resetFilter()">Сбросить всё</button><!--Галя отмена-->
+    </div>
+  </header>
+
+  <div class="main-layout"><!--категории слева, товары справа но мы налево не ходим-->
+    <aside class="sidebar"><!--хочу сушняк-->
+      <h3>Категории</h3>
+      <nav>
+        <ul>
+          <li [class.active]="selectedCategoryId === null" (click)="selectCategory(null)">
+            <span>Все продукты</span><!--если передумал брат-->
+          </li>
+          @for (cat of categories; track cat.id) {
+            <li [class.active]="selectedCategoryId === cat.id" (click)="selectCategory(cat.id)">
+              <span>{{ cat.category_name }}</span><!--ангулярка за нас цикл делает, рахмет оган-->
+            </li>
+          }
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="product-grid"><!--мы любим 3 в ряд-->
+      <div class="product-list"><!--для товара-->
+        @for (item of products; track item.id) {
+          @if (isProductVisible(item)) {
+            <div class="product-item"><!--бургер братаннын уйы короче-->
+              <div class="product-image">
+                @if (item.image_url) {
+                  <img [src]="item.image_url" [alt]="item.product_name">
+                } @else {
+                  <div class="no-image">🍔</div>
+                }
+              </div>
+
+              <div class="product-info">
+                <h3>{{ item.product_name }}</h3>
+                <p class="price">{{ item.price }} KZT</p>
+              </div>
+              
+              <div class="actions">
+                <button class="btn-main" (click)="addToCart(item)">Заказать сейчас</button>
+                <button class="btn-delete" (click)="deleteProduct(item.id)">Удалить товар</button>
+              </div>
+            </div>
+          }
+        } @empty {
+          <div class="empty-state">
+            <p>Продукты не найдены...</p>
+          </div>
+        }
+      </div>
+    </main>
+  </div>
+
+  @if (cart.length > 0) {
+    <section class="cart-section">
+      <div class="cart-header">
+        <h2>Ваш заказ</h2>
+        <button class="clear-btn" (click)="clearCart()">Очистить всё</button><!--когда захотел похавать, но вспомил что денег нет -->
+      </div>
+
+      <ul class="cart-items"> <!--индекс  потому что тут нет айди-->
+        @for (cartItem of cart; track $index) {
+          <li>
+            <span>{{ cartItem.product_name }}</span>
+            <strong>{{ cartItem.price }} KZT</strong>
+          </li>
+        }
+      </ul>
+
+      <div class="cart-footer">
+        <p>Итого к оплате: <strong>{{ getCartTotal() }} KZT</strong></p><!--денюжки-->
+        <button class="checkout-btn">Оформить заказ</button><!--4 куре гриль больше ничего не надо...-->
+      </div>
+    </section>
+  }
+</div>

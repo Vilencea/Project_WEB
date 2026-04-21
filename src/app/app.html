@@ -1,0 +1,27 @@
+<header class="header">
+  <div class="header-container">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/McDonald%27s_Golden_Arches.svg" 
+         alt="McDonald's Logo" 
+         class="logo">
+    
+    <nav class="nav"> 
+      <a routerLink="/menu" routerLinkActive="active" class="nav-link">Меню</a>
+      
+      @if (!isLoggedIn) {
+        <a routerLink="/login" routerLinkActive="active" class="nav-link">Войти</a>
+        <a routerLink="/register" routerLinkActive="active" class="nav-link">Регистрация</a>
+      }
+      
+      @if (isLoggedIn) {
+        <span class="user-name">{{ username }}</span>
+        <button (click)="logout()" class="nav-link logout-btn">Выход</button>
+      }
+      
+      <a routerLink="/calories" routerLinkActive="active" class="nav-link">Калории</a><!--наша красная шапочка-->
+    </nav>
+  </div>
+</header>
+
+<main class="main-content">
+  <router-outlet></router-outlet>
+</main>

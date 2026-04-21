@@ -1,0 +1,24 @@
+<div class="login-wrapper">
+  <h2>Вход</h2>
+
+  <div *ngIf="error" class="error-msg">{{ error }}</div>
+
+  <input
+    type="text"
+    placeholder="Логин"
+    [(ngModel)]="username"
+  />
+
+  <input
+    type="password"
+    placeholder="Пароль"
+    [(ngModel)]="password"
+  />
+
+  <button
+    (click)="onSubmit()"
+    [disabled]="loading"
+  >
+    {{loading? 'Входим...' : 'Войти' }}
+  </button>
+</div>

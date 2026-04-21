@@ -1,0 +1,92 @@
+.calories-wrapper {
+  max-width: 380px;
+  margin: 60px auto;
+  padding: 40px;
+  border-radius: 16px;
+  border: 2px solid #f5b20a;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.calories-wrapper h2 {
+  text-align: center;
+  color: #da291c;
+  font-size: 26px;
+  margin: 0 0 8px;
+}
+
+.calories-wrapper label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.calories-wrapper input,
+.calories-wrapper select {
+  width: 100%;
+  padding: 11px 14px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 15px;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.calories-wrapper input:focus,
+.calories-wrapper select:focus {
+  border-color: #f5b20a;
+}
+
+.calories-wrapper button {
+  background: #da291c;
+  color: white;
+  border: none;
+  padding: 13px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.calories-wrapper button:hover {
+  background: #b71c1c;
+}
+
+.result-box {
+  background: #fff8e1;
+  border: 2px solid #f5b20a;
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+}
+
+.result-box p {
+  margin: 6px 0;
+  color: #333;
+}
+
+.result-box strong {
+  color: #da291c;
+  font-size: 20px;
+}
+
+.result-box button {
+  margin-top: 10px;
+  background: #f5b20a;
+  color: #fff;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.result-box button:hover {
+  background: #e0a000;
+}
